@@ -1,18 +1,48 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { appReducers } from './app.reducer';
+import { AuthModule } from './pages/auth/auth.module';
+import { JwtModule } from '@auth0/angular-jwt';
+import { HttpInterceptorService } from './services/http-interceptor.service';
+
+export function tokenGetter() {
+  return localStorage.getItem("tokenStock");
+}
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
+    AuthModule,
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    StoreModule.forRoot(appReducers,{}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+      },
+    }),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true
+    }
+  ],
+  bootstrap: [AppComponent],
+  exports:[
+    BrowserModule
+  ]
 })
 export class AppModule { }

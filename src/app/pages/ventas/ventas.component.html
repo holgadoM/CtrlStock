@@ -1,0 +1,166 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Generar venta</h4>
+
+            <form [formGroup]="ventaForm" (ngSubmit)="guardar()">
+              
+                <div class="row">
+                    <div class="col" >
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <input type="text" 
+                                class="form-control input-placeholder" 
+                                placeholder="Cliente"
+                                name="cliente"
+                                formControlName="cliente">
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="form-group">
+                            <label>Pago</label>
+                            <input type="text" 
+                                class="form-control input-placeholder" 
+                                placeholder="Metodo de pago"
+                                name="pago"
+                                formControlName="pago">
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="form-check">
+                            <input 
+                                class="form-check-input"
+                                type="checkbox" 
+                                name="esMayorista"
+                                formControlName="esMayorista">
+                                <label class="form-check-label" for="flexCheckDisabled">
+                                    Es mayorista?
+                                </label>
+                          </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="container">
+                    
+                    <div class="row justify-content-between">
+                        
+                        <div class="row row-cols-auto">
+                            <div class="col col-lg-4 col-xl-4">
+                                <label>Producto</label>
+                                <select class="form-select" (change)="cambiarProducto($event)" aria-label="Default select example">
+                                    <option *ngFor="let item of produtosStock; let i = index" [selected]="i == 0" [value]="item.id">{{ item.marca }}- {{ item.modelo }}</option>
+                                </select>
+                            </div>
+                            <div class="col col-lg-4 col-xl-4">
+                                <label>Sabor</label>
+                                <select class="form-select" (change)="cambiarSabor($event)" aria-label="Default select example">
+                                    <option *ngFor="let item of producto?.gustos" [value]="item.id">{{ item.sabor }}</option>
+                                </select>
+                            </div>
+                            <div class="col col-lg-2 col-xl-2">
+                                <label>Cantidad</label>
+                                <select class="form-select" (change)="cambiarCantidad($event)" aria-label="Default select example">
+                                    <option *ngFor="let item of cantidadStock" [value]="item">{{ item }}</option>
+                                </select>
+                            </div>
+                            <div class="col-2 mt-auto">
+                                <label></label>
+                                <button (click)="agregarProducto()" type="button" class="btn btn-primary btn-sm">Agregar</button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-4 col-md-2 ms-5 col-lg-1 col-xl-1 col-xxl-1 mt-1">
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#productoModal">Agregar</button>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Marca</th>
+                                    <th scope="col">Modelo</th>
+                                    <th scope="col">Sabor</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Precio unit</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Borrar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of productos;let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{ item.marca }}</td>
+                                    <td> {{item.modelo}} </td>
+                                    <td> {{item.gusto?.sabor}} </td>
+                                    <td> {{item.cantidad}} </td>
+                                    <td *ngIf="ventaForm.controls.esMayorista.value"> {{item.mayorista}} </td>
+                                    <td *ngIf="!ventaForm.controls.esMayorista.value"> {{item.minorista}} </td>
+                                    <td> {{ item.total }} </td>
+                                    <td> <span style="color: red;" ><i (click)="borrar(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+              <div class="form-group">
+                  <label>Ingreso</label>
+                  <input type="number" 
+                         class="form-control" 
+                         placeholder="Ingreso"
+                         name="ingreso"
+                         formControlName="ingreso">
+                    <p>
+                      Debe de ser un monto positivo
+                    </p>
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input"
+                            type="checkbox" 
+                            name="esDolar"
+                            formControlName="esDolar">
+                            <label class="form-check-label" for="flexCheckDisabled">
+                                La venta es en dolares?
+                            </label>
+                      </div>
+                </div>
+
+              <!-- <div class="form-group">
+                  <label>Tipo</label>
+                  <br>
+                  <button [disabled]="tipo == 'ingreso'" type="button" (click)="tipo = 'ingreso'" class="btn btn-primary btn-block">Ingreso</button>
+                  <button [disabled]="tipo == 'egreso'" type="button" (click)="tipo = 'egreso'" class="btn btn-warning btn-block">Egreso</button>
+              </div> -->
+
+              <hr>
+              <div class="row">
+
+              <div >
+                <div class="col align-self-start">
+                    <h3>Total: {{ sumaTotal() | currency }}</h3>
+                    <button [disabled]="ventaForm.invalid" type="submit" class="btn btn-success mr-2">
+                        <div *ngIf="!cargando"><i class="fa fa-save"></i>Agregar</div>
+                        <div *ngIf="cargando"><i class="fa fa-spin fa-sync"></i>Enviando...</div>
+                    </button>
+                    
+                    <!-- 
+                        <button disabled class="btn btn-success mr-2">
+                            <i class="fa fa-spin fa-sync"></i>
+                            Espere por favor...
+                        </button> 
+                    -->
+                    
+                    <button (click)="borrarTodo()" class="btn btn-outline-danger">Borrar todo</button>
+                </div>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+
+          

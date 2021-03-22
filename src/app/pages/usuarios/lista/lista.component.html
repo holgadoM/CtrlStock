@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Lista de usuarios</h4>
+
+            <hr>
+
+            <form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
+              
+                <div class="row">
+                    <div class="col" >
+                        <div class="form-group">
+                            <label>Usuario</label>
+                            <input type="text" 
+                                class="form-control input-placeholder" 
+                                placeholder="Usuario"
+                                name="usuario"
+                                formControlName="usuario">
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" 
+                                class="form-control input-placeholder" 
+                                placeholder="Nombre"
+                                name="nombre"
+                                formControlName="nombre">
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="form-group">
+
+                            <label>Contraseña</label>
+                            <div class="input-group mb-3">
+                                <input [attr.type]="tipoInput" class="form-control" placeholder="Contraseña" formControlName="clave" >
+                                <span (click)="cambiarInput()" class="input-group-text" id="basic-addon2">
+                                     <i *ngIf="tipoInput == 'password' "  class="menu-icon fas fa-eye"></i>
+                                     <i  *ngIf="tipoInput != 'password' " class="menu-icon fas fa-eye-slash"></i>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" >
+                        <div class="form-check">
+                            <input 
+                                class="form-check-input"
+                                type="checkbox" 
+                                name="esAdmin"
+                                formControlName="esAdmin">
+                                <label class="form-check-label" for="flexCheckDisabled">
+                                    Es admin?
+                                </label>
+                          </div>
+                    </div>
+                    <div class="col mt-auto">
+                        <div class="form-group">
+                            <button [disabled]="usuarioForm.invalid" (click)="crearUsuario()" class="btn btn-success" >Crear</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                
+            </form>
+            <div class="container">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col"> Es admin? </th>
+                                <th scope="col"> borrar </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of usuarios;let i = index">
+                                <th scope="row">{{item.id}}</th>
+                                <td>{{ item.nombre }}</td>
+                                <td> {{item.usuario}} </td>
+                                <td> <input type="checkbox" (change)="cambiarAdmin(item)" [checked]="item.esAdmin"> </td>
+                                <td> <span style="color: red;" ><i (click)="borrar(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+          

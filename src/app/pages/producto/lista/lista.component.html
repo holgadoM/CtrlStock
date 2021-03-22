@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Lista de productos</h4>
+
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Modelo</th>
+                                <th scope="col">Sabor</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Costo</th>
+                                <th scope="col">Precio mayorista</th>
+                                <th scope="col">Precio monorista</th>
+                                <th scope="col">Gancia mayorista</th>
+                                <th scope="col">Ganancia minorista</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  *ngFor="let item of productos;let i = index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{ item.marca }}</td>
+                                <td> {{item.modelo}} </td>
+                                <td> {{item.gusto?.sabor}} </td>
+                                <td> {{item.gusto?.stock}} </td>
+                                <td> {{ item.gusto?.costo }} </td>
+                                <td> {{item.mayorista}} </td>
+                                <td> {{item.minorista}} </td>
+                                <td> {{item.ganciaMayorista}} </td>
+                                <td> {{item.ganciaMinorista}} </td>
+                                <td> <span style="color: red;" ><i (click)="borrar(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

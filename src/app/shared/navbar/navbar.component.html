@@ -1,0 +1,25 @@
+<!-- partial:../../partials/_navbar.html -->
+<nav class="navbar default-layout col-sm-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div (click)="cambiarEstadoSidebar()" class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+      <a class="navbar-brand brand-logo">
+        <img src="assets/images/logo.svg" alt="logo" />
+      </a>
+      <a class="navbar-brand brand-logo-mini">
+        <i *ngIf="!sidebarestado" class="menu-icon fas fa-bars"></i>
+        <i *ngIf="sidebarestado" class="menu-icon fas fa-times"></i>
+      </a>
+    </div>
+    
+    <div class="navbar-menu-wrapper d-flex align-items-center">
+     
+      <ul class="navbar-nav navbar-nav-right">
+        <span class="profile-text">Hello, {{ usuario?.nombre }}</span>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a class="nav-link" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+            <img class="img-xs rounded-circle" src="assets/images/images.png" alt="Profile image">
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- partial -->
