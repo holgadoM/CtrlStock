@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GustosModel } from 'src/app/models/gustos.model';
 import { ProductoModel } from 'src/app/models/producto.model';
+import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { productoService } from 'src/app/services/producto.service';
+import { SweetToastService } from 'src/app/services/sweetToast.service';
 import { ventasService } from 'src/app/services/venta.service';
 
 @Component({
@@ -20,33 +22,49 @@ export class VentasComponent implements OnInit {
   public produtosStock: ProductoModel[] = [];
   public cantidadStock:number[] = [];
   public productoGustos:GustosModel[] = [];
+  public ListametodosPagos:string[] = [];
 
   constructor(
     private fb:FormBuilder,
     private prodcutosService:productoService,
     private ventasService: ventasService,
+    private metodosConfgService: ConfiguracionService,
+    private sweetService: SweetToastService
 
   ) {
+    this.traerProductos();
+    this.traerMetodosPago();
     this.ventaForm = this.fb.group({
       cliente: ['', Validators.required],
       pago: ['', Validators.required],
       ingreso: ['',[ Validators.required, Validators.min(0) ]],
-      esMayorista:[],
-      esDolar:[]
+      esMayorista:[false],
+      esDolar:[false]
     });
    }
 
   ngOnInit(): void {
-    this.traerProductos()
+    
   }
 
   traerProductos(){
-    this.prodcutosService.traerTodos().subscribe((productos:any)=>{
+    this.prodcutosService.traerTodos().then((productos:any)=>{
       if( productos.length > 0 ){
         this.produtosStock = productos;
         this.cargarProductoDefault();
       }
     });
+  }
+
+  traerMetodosPago(){
+    this.metodosConfgService.obtenerMetodosPago()
+      .then((r)=>{
+        this.ListametodosPagos = [];
+        r.map((metodo)=>{
+          this.ListametodosPagos.push(metodo.metodo);
+        });
+        this.ventaForm.controls['pago'].setValue(this.ListametodosPagos[0]);
+      }).catch(err=>{});
   }
 
   cargarProductoDefault(){
@@ -109,7 +127,6 @@ export class VentasComponent implements OnInit {
         }
       }else{
         if( prod?.cantidad && prod.minorista ){
-          console.log(prod)
           prod.total = parseFloat( ( parseInt(prod.cantidad.toString()) * parseFloat(prod.minorista.toString())).toString() );
         }
       }
@@ -169,8 +186,10 @@ export class VentasComponent implements OnInit {
       .then((r)=>{
         this.borrarTodo();
         this.traerProductos();
+        this.sweetService.success('Venta registrada correctamente');
       }).catch((err)=>{
         console.log(err);
+        this.sweetService.danger(err.error.msg);
       });
 
   }

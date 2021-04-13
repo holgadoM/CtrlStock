@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h3>Lista de metodos de pago</h3>
+                
+                <form class="row g-3" [formGroup]="formControl" >
+                    <div class="col-auto">
+                        <input formControlName="inputMetodo" type="text" class="form-control" placeholder="Efectivo">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success" [disabled]="formControl.invalid" (click)="crearMetodo()" >Agregar</button>
+                    </div>   
+                </form>
+                
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Metodo</th>
+                                    <th scope="col">Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of listaMetodos;let i = index" >
+                                <td>{{ i+1 }}</td>
+                                <td>{{ item.metodo }}</td>
+                                <td> <span style="color: red;" ><i (click)="borrarMetodo(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

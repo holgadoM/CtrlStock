@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -13,9 +13,15 @@ import { AuthModule } from './pages/auth/auth.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 
+import es from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(es);
+
 export function tokenGetter() {
   return localStorage.getItem("tokenStock");
 }
+
 
 @NgModule({
   declarations: [
@@ -38,7 +44,8 @@ export function tokenGetter() {
   providers: [
     {
       provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true
-    }
+    },
+    {provide: LOCALE_ID, useValue: 'es-AR' }
   ],
   bootstrap: [AppComponent],
   exports:[

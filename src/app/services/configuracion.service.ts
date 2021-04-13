@@ -11,11 +11,15 @@ export class ConfiguracionService {
     private _http:HttpClient
   ) { }
 
-  obtenerMetodosPago(){
-    return this._http.get(`${url}/configuracion/metodos`).toPromise();
+  obtenerMetodosPago():Promise<any[]>{
+    return this._http.get(`${url}/configuracion/metodos`).toPromise<any>();
   }
 
   crearMetodoPago(metodo:string){
     return this._http.post(`${url}/configuracion/metodos/agregar`,{metodo}).toPromise();
+  }
+  
+  eliminarMetodo(id:number){
+    return this._http.delete(`${url}/configuracion/metodos/eliminar/${id}`,).toPromise();
   }
 }

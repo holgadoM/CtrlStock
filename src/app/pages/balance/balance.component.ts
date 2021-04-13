@@ -12,6 +12,10 @@ export class BalanceComponent implements OnInit {
 
   public ventasPorMetodosPago :ventasPorMetodosPagoModel[] = [];
   private _arrayMetodosDePago:string[] = [];
+  public fecha:any;
+  public total_gral:number = 0;
+  public ganancia_gral:number = 0;
+  public ingreso_gral:number = 0;
 
   constructor(
     private balanceService: BalanceService,
@@ -22,8 +26,12 @@ export class BalanceComponent implements OnInit {
   }
 
   cambiarFecha($event:any){
+    this.fecha = $event.target.value;
     this.ventasPorMetodosPago = [];
     this._arrayMetodosDePago = [];
+    this.ganancia_gral = 0;
+    this.total_gral = 0;
+    this.ingreso_gral = 0;
     this.balanceService.obtenerPorMetodoDePago($event.target.value)
       .then((r:IventasItemModel[])=>{
         r.map((venta)=>{
@@ -33,19 +41,31 @@ export class BalanceComponent implements OnInit {
         });
 
         this._arrayMetodosDePago.map((rst)=>{
+          console.log(rst);
           const auxVentas = r.filter((venta)=> venta.metodo_pago == rst);
           let total = 0;
+          let ganancia_aux = 0;
+          let total_ingreso = 0;
           auxVentas.map((auxVenta)=>{
-            total += auxVenta.precio
+            total += parseFloat(auxVenta.precio.toString());
+            total_ingreso += parseFloat(auxVenta.ingreso.toString());
+            auxVenta.productos.map((prod)=>{
+              if(prod.gusto?.costo){
+                ganancia_aux += ( prod.gusto?.costo);
+              }
+            });
           });
+          this.total_gral += total;
+          this.ganancia_gral += (total - ganancia_aux);
+          this.ingreso_gral += total_ingreso;
           this.ventasPorMetodosPago.push({
             metodo : rst,
             items: auxVentas,
-            total: total
+            total: total,
+            ganancia_neta: (total - ganancia_aux),
+            total_ingreso: total_ingreso
           });
         });
-
-        console.log(this.ventasPorMetodosPago);
       })
       .catch((err)=> this.sweetService.warning(err.error.msg) )
   }

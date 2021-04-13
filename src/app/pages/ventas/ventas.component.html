@@ -20,11 +20,14 @@
                     <div class="col" >
                         <div class="form-group">
                             <label>Pago</label>
-                            <input type="text" 
+                            <select formControlName="pago" class="form-select" >
+                                <option *ngFor="let item of ListametodosPagos" [value]="item">{{item}}</option>
+                            </select>
+                            <!-- <input type="text" 
                                 class="form-control input-placeholder" 
                                 placeholder="Metodo de pago"
                                 name="pago"
-                                formControlName="pago">
+                                formControlName="pago"> -->
                         </div>
                     </div>
                     <div class="col" >

@@ -42,9 +42,11 @@ export class AgregarComponent implements OnInit {
 
   traerProductos() {
     this.productoService.traerTodos()
-      .subscribe(( productos:any)=>{
-        this.productos = productos;
-        this.idProducto = this.productos[0].id;
+      .then(( productos:any)=>{
+        if(productos.length > 0){
+          this.productos = productos;
+          this.idProducto = this.productos[0].id;
+        }
       });
   }
 

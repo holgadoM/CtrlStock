@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
     providedIn: 'root'
 })
 export class SweetToastService{
+
     constructor(){}
 
     success(msg:string){

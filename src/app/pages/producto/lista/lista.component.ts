@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoModel } from 'src/app/models/producto.model';
 import { productoService } from 'src/app/services/producto.service';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
-
+import SweetAlert from "sweetalert2";
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
@@ -22,8 +22,9 @@ export class ListaComponent implements OnInit {
   }
 
   traerTodos(){
-    this.productosService.traerTodos().toPromise()
+    this.productosService.traerTodos()
       .then((productos:any)=>{
+        this.productos = [];
         this.productos = productos;
         this.armarArrayProductos();
       }).catch((err)=> this.sweetService.danger(err.error.msg) );
@@ -45,7 +46,27 @@ export class ListaComponent implements OnInit {
   }
 
   borrar(item:any){
-    console.log(item);
+    SweetAlert.fire({
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6',
+      position: 'center',
+      reverseButtons: true,
+      text: `Quiere eliminar: ${item.marca} ${item.modelo} ${item.gusto?.sabor} ?`,
+      
+    }).then((resultado)=>{
+      if( resultado.isConfirmed ){
+         this.productosService.eliminarGusto(item.gusto.id)
+          .then((rst)=>{
+              this.sweetService.success("Gusto eliminado!");
+              this.traerTodos();
+          })
+          .catch((err)=> this.sweetService.danger(err.error.msg) )
+      }
+    });
   }
 
 }

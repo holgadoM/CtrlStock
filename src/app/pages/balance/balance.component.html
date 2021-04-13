@@ -11,21 +11,49 @@
                     <input type="month" min="2021-01" (change)="cambiarFecha($event)" name="fecha" id="">
                 </div>
             </div>
-            
-            <hr>
-            
-            <div class="row g-4">
-                <div class="col-auto me-auto" *ngFor="let item of ventasPorMetodosPago">
-                    <div class="row">
-                        <div class="card">
-                            <div class="card-body">
-                                Metodo: <b>{{ item.metodo }}</b>
-                                <div class="text">
-                                    Total <span class="text-verde">{{ item.total | currency }} </span>
+            <div *ngIf="ventasPorMetodosPago.length > 0">
+
+                <hr>
+                
+                <div class="row g-4">
+                    <h3>Cajas</h3>
+                    <div class="col-auto me-auto" *ngFor="let item of ventasPorMetodosPago">
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    Metodo: <b>{{ item.metodo }}</b>
+                                    <div class="text">
+                                        Total <span class="text-verde">{{ item.total | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Ganancia Neta <span class="text-verde">{{ item.ganancia_neta | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Ingreso total <span class="text-verde">{{ item.total_ingreso | currency }} </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <hr>
+                <div class="row g-4">
+                    <h3>Balance General de {{fecha | date:'MMMM yyyy'}}</h3>
+                   
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text">
+                                Total <span class="text-verde">{{ total_gral | currency }} </span>
+                            </div>
+                            <div class="text">
+                                Ganancia Neta <span class="text-verde">{{ ganancia_gral | currency }} </span>
+                            </div>
+                            <div class="text">
+                                Ingreso total <span class="text-verde">{{ ingreso_gral | currency }} </span>
+                            </div>
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
            

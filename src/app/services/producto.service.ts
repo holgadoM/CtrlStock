@@ -11,7 +11,7 @@ export class productoService{
     ){}
 
     traerTodos(){
-        return this._http.get(`${url}/producto/`);
+        return this._http.get(`${url}/producto/`).toPromise();
     }
 
     crearProducto(data:any){
@@ -20,5 +20,9 @@ export class productoService{
     
     agregarGusto(id:number,data:any){
         return this._http.post(`${url}/producto/${id}/agregarGusto`,{...data}).toPromise();
+    }
+
+    eliminarGusto(id:number){
+        return this._http.delete(`${url}/producto/${id}`).toPromise();
     }
 }
