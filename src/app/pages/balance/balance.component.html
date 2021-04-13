@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="row g-5">
+                <div class="col">
+                    <h4 class="card-title">Balance general</h4>
+                </div>
+                <div class="col-auto">
+                    <input type="month" min="2021-01" (change)="cambiarFecha($event)" name="fecha" id="">
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row g-4">
+                <div class="col-auto me-auto" *ngFor="let item of ventasPorMetodosPago">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                Metodo: <b>{{ item.metodo }}</b>
+                                <div class="text">
+                                    Total <span class="text-verde">{{ item.total | currency }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+          </div>
+        </div>
+    </div>
+</div>

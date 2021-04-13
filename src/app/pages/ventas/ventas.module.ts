@@ -11,6 +11,7 @@ import { AgregarComponent } from '../producto/agregar/agregar.component';
 import { ListaComponent } from '../producto/lista/lista.component';
 import { ListaVentasComponent } from './lista-ventas/lista-ventas.component';
 import { ListaUsuariosComponent } from '../usuarios/lista/lista.component';
+import { BalanceComponent } from '../balance/balance.component';
 
 
 
@@ -21,7 +22,8 @@ import { ListaUsuariosComponent } from '../usuarios/lista/lista.component';
     AgregarComponent,
     ListaComponent,
     ListaVentasComponent,
-    ListaUsuariosComponent
+    ListaUsuariosComponent,
+    BalanceComponent
   ],
   imports: [
     CommonModule,

@@ -23,7 +23,7 @@ export class SweetToastService{
           })
           
           Toast.fire({
-            html:`<div style="[color: #545454;]">${msg}</div>`,
+            title: msg,
             icon: 'success',
             timer: 3000
           });
@@ -46,7 +46,7 @@ export class SweetToastService{
           })
           
           Toast.fire({
-            html:`<div style="[color: #545454;]">${msg}</div>`,
+            title: msg,
             icon: 'warning',
             timer: 3000
           });
