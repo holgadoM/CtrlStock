@@ -139,8 +139,12 @@ export class VentasComponent implements OnInit {
       this.productos.map((prod)=>{
         if( prod.id == this.producto?.id && prod.gusto?.id == this.producto?.gusto?.id ){
           if( this.producto.cantidad && prod.cantidad){
-            prod.cantidad +=  parseInt(this.producto!.cantidad.toString())
-            agregar = false;
+            prod.cantidad +=  parseInt(this.producto!.cantidad.toString());
+            if( prod.cantidad > this.cantidadStock.length ){
+              prod.cantidad -=  parseInt(this.producto!.cantidad.toString());
+              this.sweetService.warning("Stock insuficiente");
+            }
+              agregar = false;
           }
         }
       });
@@ -148,6 +152,7 @@ export class VentasComponent implements OnInit {
         this.productos.push({...this.producto});
       }
       this.calcularTotalPorProducto();
+
     }
   }
 
@@ -171,6 +176,9 @@ export class VentasComponent implements OnInit {
   borrarTodo(){
     this.ventaForm.reset();
     this.productos = [];
+    if(this.ListametodosPagos.length > 0){
+      this.ventaForm.controls['pago'].setValue(this.ListametodosPagos[0]);
+    }
   }
 
   guardar(){
