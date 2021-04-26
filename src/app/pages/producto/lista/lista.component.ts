@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ProductoModel } from 'src/app/models/producto.model';
 import { productoService } from 'src/app/services/producto.service';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import SweetAlert from "sweetalert2";
 @Component({
   selector: 'app-lista',
@@ -18,10 +19,15 @@ export class ListaComponent implements OnInit {
 
   controls!: FormArray;
 
+  public esAdmin = false;
+
   constructor(
     private productosService: productoService,
-    private sweetService: SweetToastService
-  ) { }
+    private sweetService: SweetToastService,
+    private usuarioService:UsuarioService
+  ) { 
+    this.esAdmin = this.usuarioService.esAdmin();
+  }
 
   ngOnInit(): void {
     this.traerTodos();

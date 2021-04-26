@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import SweetAlert from "sweetalert2";
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -24,7 +25,7 @@ export class ListaUsuariosComponent implements OnInit {
       usuario:['',Validators.required],
       nombre:['',Validators.required],
       clave:['',Validators.required],
-      esAdmin:[]
+      esAdmin:[false]
     });
   }
 
@@ -44,7 +45,19 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   cambiarAdmin(usuario:UsuarioModel){
-
+    usuario.esAdmin = !usuario.esAdmin;
+    this.usuarios.map((user)=>{
+      if( user.id == usuario.id ){
+        user.esAdmin = usuario.esAdmin;
+      }
+    });
+    this.usuaruiService.cambiarAdmin(usuario)
+      .then((r)=>{
+      })
+      .catch((err)=>{
+        this._sweetService.danger(err.error.msg);
+        this.traerTodos();
+      });
   }
 
   cambiarInput(){
@@ -72,7 +85,28 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   borrar(item:any){
-    console.log(item);
+    SweetAlert.fire({
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6',
+      position: 'center',
+      reverseButtons: true,
+      text: `Quiere eliminar ${item.nombre} - ${item.usuario}?`,
+      
+    }).then((resultado)=>{
+      if( resultado.isConfirmed ){
+        this.usuaruiService.eliminarUsuario(item.id)
+        .then((rst)=>{
+          this._sweetService.success("Usuario eliminado correctamente");
+          this.traerTodos();
+        }).catch((err)=>{
+          this._sweetService.danger(err.error.msg);
+        }); 
+      }
+    });
   }
 
 }

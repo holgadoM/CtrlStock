@@ -30,8 +30,16 @@ export class ListaVentasComponent implements OnInit {
     this.ventasService.listarVentas()
       .then((ventas:any)=>{
         this.ventas = ventas;
+        this.ventas
         this.ventasTabla = this.ventas;
+        this.asignarEstado();
       });
+  }
+
+  asignarEstado(){
+    this.ventasTabla.forEach((venta)=>{
+      this.cambiarEstado(venta.estado, venta.id);
+    });
   }
 
   buscar(){

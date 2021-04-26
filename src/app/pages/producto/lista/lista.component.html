@@ -30,7 +30,8 @@
                                 <td>{{ item.marca }}</td>
                                 <td> {{item.modelo}} </td>
                                 <td> {{item.gusto?.sabor}} </td>
-                                <td> 
+                                <!-- si es admin puedo editar la columna-->
+                                <td *ngIf="esAdmin">
                                     <editable (update)="updateField(i, 'stock')">
                                         <ng-template viewMode>{{item.gusto?.stock}}</ng-template>
                                         <ng-template editMode>
@@ -38,8 +39,13 @@
                                         </ng-template>
                                     </editable>
                                 </td>
+                                <!-- si NO es admin, solo veo los datos  -->
+                                <td *ngIf="!esAdmin">
+                                    {{item.gusto?.stock}}
+                                </td>
                                 <td> {{ item.gusto?.costo }} </td>
-                                <td> 
+                                <!-- si es admin puedo editar la columna-->
+                                <td *ngIf="esAdmin"> 
                                     <editable (update)="updateField(i, 'mayorista')">
                                         <ng-template viewMode>{{item.mayorista}}</ng-template>
                                         <ng-template editMode>
@@ -47,13 +53,22 @@
                                         </ng-template>
                                     </editable>
                                 </td>
-                                <td> 
+                                 <!-- si NO es admin, solo veo los datos  -->
+                                <td *ngIf="!esAdmin">
+                                    {{item.mayorista}}
+                                </td>
+                                <!-- si es admin puedo editar la columna-->
+                                <td *ngIf="esAdmin"> 
                                     <editable (update)="updateField(i, 'minorista')">
                                         <ng-template viewMode>{{item.minorista}}</ng-template>
                                         <ng-template editMode>
                                             <input [formControl]="getControl(i, 'minorista')" focusable editableOnEnter>
                                         </ng-template>
                                     </editable>
+                                </td>
+                                 <!-- si NO es admin, solo veo los datos  -->
+                                <td *ngIf="!esAdmin">
+                                    {{item.minorista}}
                                 </td>
                                 <td> {{item.ganciaMayorista}} </td>
                                 <td> {{item.ganciaMinorista}} </td>

@@ -47,4 +47,21 @@ export class UsuarioService{
     registrarUsuario(data:{}){
         return this._http.post(`${url}/usuario/registro`,{...data}).toPromise();
     }
+
+    eliminarUsuario(id:number){
+        return this._http.delete(`${url}/usuario/eliminar/${id}`).toPromise();
+    }
+    
+    cambiarAdmin(usuario:any){
+        return this._http.put(`${url}/usuario/cambiarAdmin/`,{usuario}).toPromise();
+    }
+
+    esAdmin():boolean{
+        const token = localStorage.getItem('tokenStock');
+        if( token ){
+            let usuario = this.jwt.decodeToken(token);
+            return usuario['esAdmin'];
+        }
+        return false;
+    }
 }
