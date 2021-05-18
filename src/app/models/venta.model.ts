@@ -11,5 +11,6 @@ export interface ventaModel{
     ingreso: number,
     usuario:UsuarioModel,
     productos: ProductoVentaModel[],
-    estado: string
+    estado: string,
+    createdAt:any
 }

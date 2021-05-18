@@ -2,6 +2,7 @@ import { NgModule, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import {ClipboardModule} from '@angular/cdk/clipboard'; 
 
 import { DashboardRoutesModule } from '../dashboard/dashboard-routes.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -41,7 +42,8 @@ import { FocusableDirective } from 'src/app/directive/focusable.directive';
     DashboardRoutesModule,
     SharedModule,
     ReactiveFormsModule,
-    Ng2SmartTableModule
+    Ng2SmartTableModule,
+    ClipboardModule
   ],
   exports:[
     DashboardComponent,

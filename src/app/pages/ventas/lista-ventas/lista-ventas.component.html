@@ -21,24 +21,27 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Fecha</th>
                                     <th scope="col">Cliente</th>
                                     <th scope="col">Metodo de pago</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Ingreso</th>
+                                    <th scope="col">Deuda</th>
                                     <th scope="col">Venta dolar</th>
                                     <th scope="col">Vendedor</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col">Productos</th>
+                                    <th scope="col">Copiar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr  *ngFor="let item of ventasTabla">
-                                    <th scope="row">{{item.id}}</th>
+                                    <th scope="row">{{item.createdAt | date}}</th>
                                     <td>{{ item.cliente }}</td>
                                     <td> {{item.metodo_pago}} </td>
                                     <td> {{item.precio}} </td>
                                     <td> {{item.ingreso}} </td>
+                                    <td [ngClass]="{ 'color-red': (item.precio - item.ingreso) > 0 }" > {{item.precio - item.ingreso}} </td>
                                     <td> {{ item.venta_dolar }} </td>
                                     <td> {{ item.usuario.nombre }} </td>
                                     <td> 
@@ -101,6 +104,7 @@
                                        
                                         </tr> -->
                                     </td>
+                                    <td> <i (click)="copiarProductos(item.id)" class="fas fa-copy fa-2x"></i> </td>
                                 </tr>
                             </tbody>
                         </table>
