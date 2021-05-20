@@ -1,3 +1,12 @@
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
         <div class="pb-2 text-end">
@@ -27,11 +36,13 @@
                                     <th scope="col">Total</th>
                                     <th scope="col">Ingreso</th>
                                     <th scope="col">Deuda</th>
+                                    <th scope="col">Ganancia</th>
                                     <th scope="col">Venta dolar</th>
                                     <th scope="col">Vendedor</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col">Productos</th>
                                     <th scope="col">Copiar</th>
+                                    <th scope="col">Editar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +53,7 @@
                                     <td> {{item.precio}} </td>
                                     <td> {{item.ingreso}} </td>
                                     <td [ngClass]="{ 'color-red': (item.precio - item.ingreso) > 0 }" > {{item.precio - item.ingreso}} </td>
+                                    <td> {{ item.ganancia }} </td>
                                     <td> {{ item.venta_dolar }} </td>
                                     <td> {{ item.usuario.nombre }} </td>
                                     <td> 
@@ -105,6 +117,7 @@
                                         </tr> -->
                                     </td>
                                     <td> <i (click)="copiarProductos(item.id)" class="fas fa-copy fa-2x"></i> </td>
+                                    <td> <i (click)="editar(item.id)" class="fas fa-edit fa-2x"></i> </td>
                                 </tr>
                             </tbody>
                         </table>

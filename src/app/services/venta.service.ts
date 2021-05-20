@@ -13,6 +13,10 @@ export class ventasService{
     listarVentas(){
         return this._http.get(`${url}/ventas/`,).toPromise();
     }
+    
+    traerPorId(id:any){
+        return this._http.get(`${url}/ventas/${id}`,).toPromise();
+    }
 
     crearVenta(data:any){
         return this._http.post(`${url}/ventas/crear`, { ...data }).toPromise();
@@ -20,5 +24,9 @@ export class ventasService{
 
     cambiarEstado(estado:string, id:number){
         return this._http.put(`${url}/ventas/cambiarEstado/${id}`, {estado}).toPromise();
+    }
+    
+    eliminarProductoVenta(idVenta:any, idProducto:any, idGusto:any){
+        return this._http.delete(`${url}/ventas/eliminarProducto/${idVenta}/${idProducto}/${idGusto}`,).toPromise();
     }
 }

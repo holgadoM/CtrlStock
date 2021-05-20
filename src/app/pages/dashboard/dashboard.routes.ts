@@ -5,6 +5,7 @@ import { ConfiguracionesComponent } from "../configuraciones/configuraciones.com
 import { AgregarComponent } from "../producto/agregar/agregar.component";
 import { ListaComponent } from "../producto/lista/lista.component";
 import { ListaUsuariosComponent } from "../usuarios/lista/lista.component";
+import { EditarVentaComponent } from "../ventas/editar-venta/editar-venta.component";
 import { ListaVentasComponent } from "../ventas/lista-ventas/lista-ventas.component";
 import { VentasComponent } from "../ventas/ventas.component";
 
@@ -16,5 +17,6 @@ export const dashboardRoutes : Routes = [
     { path: 'venta-lista', component: ListaVentasComponent },
     { path: 'usuarios', canActivate:[EsAdminGuard], component: ListaUsuariosComponent },
     { path: 'balance', canActivate:[EsAdminGuard], component: BalanceComponent },
-    { path: 'configuracion', canActivate:[EsAdminGuard],component: ConfiguracionesComponent }
+    { path: 'configuracion', canActivate:[EsAdminGuard],component: ConfiguracionesComponent },
+    { path: 'editar-venta/:id', canActivate:[EsAdminGuard], component: EditarVentaComponent }
 ];

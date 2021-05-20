@@ -4,6 +4,7 @@ import { ventaModel } from 'src/app/models/venta.model';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
 import { ventasService } from 'src/app/services/venta.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-ventas',
@@ -11,7 +12,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
   styleUrls: ['./lista-ventas.component.css']
 })
 export class ListaVentasComponent implements OnInit {
-
+  isCollapsed:boolean = true;
   @ViewChild('inputBuscar') cntrolBuscar!:ElementRef;
 
   public ventas!:ventaModel[];
@@ -20,7 +21,8 @@ export class ListaVentasComponent implements OnInit {
   constructor(
     private ventasService:ventasService,
     private sweetService: SweetToastService,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +35,6 @@ export class ListaVentasComponent implements OnInit {
         this.ventas = ventas;
         this.ventas
         this.ventasTabla = this.ventas;
-        console.log(this.ventasTabla);
         this.asignarEstado();
       });
   }
@@ -52,6 +53,10 @@ export class ListaVentasComponent implements OnInit {
       if( venta.usuario.nombre.toLowerCase().includes( String( this.cntrolBuscar.nativeElement.value ).toLowerCase() ) ) return venta;
       return;
     });
+  }
+
+  editar(id:any){
+    this.router.navigate([`editar-venta/${id}`]);
   }
 
   cambiarEstado(estado:string, id?:number){
@@ -84,7 +89,6 @@ export class ListaVentasComponent implements OnInit {
 
         venta.productos.forEach((producto, index)=>{
           textoProductos += `#${index+1} ${ producto.producto.marca } - ${ producto.producto.modelo } - ${ producto.gusto.sabor } - ${ producto.cantidad }\n`;
-          console.log(textoProductos);
         });
       }
     });

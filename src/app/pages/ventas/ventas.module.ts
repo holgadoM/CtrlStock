@@ -6,20 +6,25 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 
 import { DashboardRoutesModule } from '../dashboard/dashboard-routes.module';
 import { SharedModule } from '../../shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { VentasComponent } from './ventas.component';
+//componentes
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AgregarComponent } from '../producto/agregar/agregar.component';
-import { ListaComponent } from '../producto/lista/lista.component';
-import { ListaVentasComponent } from './lista-ventas/lista-ventas.component';
-import { ListaUsuariosComponent } from '../usuarios/lista/lista.component';
 import { BalanceComponent } from '../balance/balance.component';
 import { ConfiguracionesComponent } from '../configuraciones/configuraciones.component';
 import { EditableComponent } from 'src/app/directive/editable/editable.component';
-import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directive';
+import { EditarVentaComponent } from './editar-venta/editar-venta.component';
+import { ListaComponent } from '../producto/lista/lista.component';
+import { ListaVentasComponent } from './lista-ventas/lista-ventas.component';
+import { ListaUsuariosComponent } from '../usuarios/lista/lista.component';
+import { VentasComponent } from './ventas.component';
+
+//directivas
 import { EditableOnEnterDirective } from 'src/app/directive/editable/editable-on-enter.directive';
 import { EditModeDirective } from 'src/app/directive/editable/edit-mode.directive';
 import { FocusableDirective } from 'src/app/directive/focusable.directive';
+import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directive';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,8 @@ import { FocusableDirective } from 'src/app/directive/focusable.directive';
     ViewModeDirective,
     EditableOnEnterDirective,
     EditModeDirective,
-    FocusableDirective
+    FocusableDirective,
+    EditarVentaComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +49,8 @@ import { FocusableDirective } from 'src/app/directive/focusable.directive';
     SharedModule,
     ReactiveFormsModule,
     Ng2SmartTableModule,
-    ClipboardModule
+    ClipboardModule,
+    NgbModule
   ],
   exports:[
     DashboardComponent,
