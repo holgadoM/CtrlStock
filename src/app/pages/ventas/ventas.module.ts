@@ -6,7 +6,6 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 
 import { DashboardRoutesModule } from '../dashboard/dashboard-routes.module';
 import { SharedModule } from '../../shared/shared.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 //componentes
 import { DashboardComponent } from '../dashboard/dashboard.component';
@@ -25,6 +24,9 @@ import { EditableOnEnterDirective } from 'src/app/directive/editable/editable-on
 import { EditModeDirective } from 'src/app/directive/editable/edit-mode.directive';
 import { FocusableDirective } from 'src/app/directive/focusable.directive';
 import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directive';
+import { CostoComponent } from './costo/costo.component';
+import { RegistrarEgresoComponent } from './registrar-egreso/registrar-egreso.component';
+import { ListarEgresosComponent } from './listar-egresos/listar-egresos.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,10 @@ import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directiv
     EditableOnEnterDirective,
     EditModeDirective,
     FocusableDirective,
-    EditarVentaComponent
+    EditarVentaComponent,
+    CostoComponent,
+    RegistrarEgresoComponent,
+    ListarEgresosComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +55,6 @@ import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directiv
     ReactiveFormsModule,
     Ng2SmartTableModule,
     ClipboardModule,
-    NgbModule
   ],
   exports:[
     DashboardComponent,

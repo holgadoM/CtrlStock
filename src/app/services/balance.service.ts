@@ -15,4 +15,8 @@ export class BalanceService {
   obtenerPorMetodoDePago(fecha:string) : Promise<IventasItemModel[]>{
     return this.http.get(`${url}/balance/metodoPago/${fecha}`).toPromise<any>();
   }
+
+  obtenerTodosMetodoDePago() : Promise<IventasItemModel[]>{
+    return this.http.get(`${url}/balance/TodosmetodoPago`).toPromise<any>();
+  }
 }

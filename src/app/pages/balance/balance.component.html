@@ -8,7 +8,7 @@
                     <h4 class="card-title">Balance general</h4>
                 </div>
                 <div class="col-auto">
-                    <input type="month" min="2021-01" (change)="cambiarFecha($event)" name="fecha" id="">
+                    <input type="month" placeholder="Formato: 2021-05" min="2021-01" (change)="cambiarFecha($event)" name="fecha" id="">
                 </div>
             </div>
             <div *ngIf="ventasPorMetodosPago.length > 0">
@@ -24,6 +24,9 @@
                                     Metodo: <b>{{ item.metodo }}</b>
                                     <div class="text">
                                         Total <span class="text-verde">{{ item.total | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Total Egreso <span class="text-rojo">{{ item.total_egreso | currency }} </span>
                                     </div>
                                     <div class="text">
                                         Ganancia Neta <span class="text-verde">{{ item.ganancia_neta | currency }} </span>
@@ -46,10 +49,13 @@
                                 Total <span class="text-verde">{{ total_gral | currency }} </span>
                             </div>
                             <div class="text">
+                                Total egreso <span class="text-rojo">{{ egreso_gral | currency }} </span>
+                            </div>
+                            <div class="text">
                                 Ganancia Neta <span class="text-verde">{{ ganancia_gral | currency }} </span>
                             </div>
                             <div class="text">
-                                Ingreso total <span class="text-verde">{{ ingreso_gral | currency }} </span>
+                                Ingreso total <span class="text-verde">{{ ingreso_gral - egreso_gral | currency }} </span>
                             </div>
                         </div>
                     </div>

@@ -1,129 +1,144 @@
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="pb-2 text-end">
-            <button class="btn btn-outline-primary" (click)="traerVentas()" > <i class="fas fa-sync-alt"></i> Actualizar</button>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row justify-content-between row-cols-auto">
-                    <div class="col">
-                        <h4>Lista de ventas</h4>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="row g-4">
+                    <div class="row g-5 mb-3">
+                        <div class="col">
+                            <h5>Cajas</h5>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <h5>Total: {{ventasTabla.length}}</h5>
-                    </div>
-                </div>
-                <div >
-                    <input class="form-control" #inputBuscar (keyup)="buscar()" placeholder="Buscar..." type="text">
-                </div>
-                <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Metodo de pago</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Ingreso</th>
-                                    <th scope="col">Deuda</th>
-                                    <th scope="col">Ganancia</th>
-                                    <th scope="col">Venta dolar</th>
-                                    <th scope="col">Vendedor</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Productos</th>
-                                    <th scope="col">Copiar</th>
-                                    <th scope="col">Editar</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr  *ngFor="let item of ventasTabla">
-                                    <th scope="row">{{item.createdAt | date}}</th>
-                                    <td>{{ item.cliente }}</td>
-                                    <td> {{item.metodo_pago}} </td>
-                                    <td> {{item.precio}} </td>
-                                    <td> {{item.ingreso}} </td>
-                                    <td [ngClass]="{ 'color-red': (item.precio - item.ingreso) > 0 }" > {{item.precio - item.ingreso}} </td>
-                                    <td> {{ item.ganancia }} </td>
-                                    <td> {{ item.venta_dolar }} </td>
-                                    <td> {{ item.usuario.nombre }} </td>
-                                    <td> 
-                                        <div class="btn-group">
-                                            <button type="button" class="btn" [ngClass]="{ 'btn-warning': item.estado == 'Pendiente', 'btn-success' : item.estado == 'Entregado' }" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-                                                <i class="fas fa-caret-down"></i>
-                                                {{ item.estado }}
-                                            </button>
-                                            <div class="dropdown-menu">
-                                              <a class="dropdown-item" (click)="cambiarEstado('Pendiente', item.id)">
-                                                  Pendiente
-                                              </a>
-                                              <a class="dropdown-item" (click)="cambiarEstado('Entregado', item.id)">
-                                                  Entregado
-                                              </a>
-                                            </div>
-                                          </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group dropleft">
-                                            <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-left"></i> Ver</button>
-                                            <div class="dropdown-menu">
-                                              <a class="dropdown-item" *ngFor="let producto of item.productos;let i = index;">
-                                                #{{i+1}} {{ producto.producto.marca }} - {{ producto.producto.modelo }} -
-                                                {{ producto.gusto.sabor }} - {{ producto.cantidad }}
-                                              </a>
-                                       
-                                            </div>
-                                          </div>
-                                        <!-- <button class="btn btn-primary" type="button" data-toggle="collapse" [attr.data-target]="'#collapse'+item.id" aria-expanded="false" [attr.aria-controls]="'collapse'+item.id">
-                                        Ver productos
-                                        </button>
-                                        <tr class="collapse" [id]="'collapse'+item.id">
-                                     
-                                            <div class="row">
-                                            <div class="col">
-                                                <div class="table-responsive mt-2">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Marca</th>
-                                                                <th scope="col">Modelo</th>
-                                                                <th scope="col">Sabor</th>
-                                                                <th scope="col">Cantidad</th>
-                                                                <!-- falta lista de productos y sus gustos
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr *ngFor="let producto of item.productos">
-                                                                    <td scope="col">{{ producto.producto.marca }}</td>
-                                                                    <td scope="col">{{ producto.producto.modelo }}</td>
-                                                                    <td scope="col"> {{ producto.gusto.sabor }} </td>
-                                                                    <td scope="col"> {{ producto.cantidad }} </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                       
-                                        </tr> -->
-                                    </td>
-                                    <td> <i (click)="copiarProductos(item.id)" class="fas fa-copy fa-2x"></i> </td>
-                                    <td> <i (click)="editar(item.id)" class="fas fa-edit fa-2x"></i> </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="row justify-content-around">
+                        <div class="col-auto" *ngFor="let item of ventasPorMetodosPago">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    Metodo: <b>{{ item.metodo }}</b>
+                                    <div class="text">
+                                        Total <span class="text-verde">{{ item.total | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Total egreso <span class="text-rojo">{{ item.total_egreso | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Ganancia Neta <span class="text-verde">{{ item.ganancia_neta | currency }} </span>
+                                    </div>
+                                    <div class="text">
+                                        Ingreso total <span class="text-verde">{{ item.total_ingreso | currency }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-12">
+        <div class="pb-1 mt-3 text-end">
+            <button class="btn btn-outline-primary" (click)="traerVentas()" > <i class="fas fa-sync-alt"></i> Actualizar</button>
+        </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-between row-cols-auto">
+                        <div class="col">
+                            <h4>Lista de ventas</h4>
+                        </div>
+                        <div class="col-auto">
+                            <h5>Total: {{ventasTabla.length}}</h5>
+                        </div>
+                    </div>
+                    <div >
+                        <input class="form-control" #inputBuscar (keyup)="buscar()" placeholder="Buscar..." type="text">
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Metodo de pago</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Ingreso</th>
+                                        <th scope="col">Egreso</th>
+                                        <th scope="col">Deuda</th>
+                                        <th scope="col">Ganancia</th>
+                                        <th scope="col">Venta dolar</th>
+                                        <th scope="col">Vendedor</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Productos</th>
+                                        <th scope="col">Copiar</th>
+                                        <th scope="col">Editar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  *ngFor="let item of ventasTabla">
+                                        <th scope="row">{{item.createdAt | date}}</th>
+                                        <td>{{ item.cliente }}</td>
+                                        <td> {{item.metodo_pago}} </td>
+                                        <td> {{item.precio}} </td>
+                                        <td> 
+                                            <div *ngIf="!item.esEgreso"> {{item.ingreso}} </div> 
+                                            <div *ngIf="item.esEgreso"> 0 </div>
+                                        </td>
+                                        <td> 
+                                            <div class="color-red" *ngIf="item.esEgreso"> {{item.precio}} </div> 
+                                            <div *ngIf="!item.esEgreso"> 0 </div>
+                                        </td>
+                                        <td [ngClass]="{ 'color-red': (item.precio - item.ingreso) > 0 }" > {{item.precio - item.ingreso}} </td>
+                                        <td> {{ item.ganancia }} </td>
+                                        <td> {{ item.venta_dolar }} </td>
+                                        <td> {{ item.usuario.nombre }} </td>
+                                        <td> 
+                                            <div class="btn-group" *ngIf="!item.esEgreso">
+                                                <button type="button" class="btn" [ngClass]="{ 'btn-warning': item.estado == 'Pendiente', 'btn-success' : item.estado == 'Entregado' }" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                                                    <i class="fas fa-caret-down"></i>
+                                                    {{ item.estado }}
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                <a class="dropdown-item" (click)="cambiarEstado('Pendiente', item.id)">
+                                                    Pendiente
+                                                </a>
+                                                <a class="dropdown-item" (click)="cambiarEstado('Entregado', item.id)">
+                                                    Entregado
+                                                </a>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="item.esEgreso"></div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group dropleft" *ngIf="!item.esEgreso">
+                                                <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-left"></i> Ver</button>
+                                                <div class="dropdown-menu">
+                                                <a class="dropdown-item" *ngFor="let producto of item.productos;let i = index;">
+                                                    #{{i+1}} {{ producto.producto.marca }} - {{ producto.producto.modelo }} -
+                                                    {{ producto.gusto.sabor }} - {{ producto.cantidad }}
+                                                </a>
+                                        
+                                                </div>
+                                            </div>
+                                            <div *ngIf="item.esEgreso"></div>
+                                        </td>
+                                        <td> 
+                                            <i *ngIf="!item.esEgreso" (click)="copiarProductos(item.id)" class="fas fa-copy fa-2x"></i> 
+                                            <div *ngIf="item.esEgreso"></div>
+                                        </td>
+                                        <td> 
+                                            <i *ngIf="!item.esEgreso" (click)="editar(item.id)" class="fas fa-edit fa-2x"></i> 
+                                            <div *ngIf="item.esEgreso"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    

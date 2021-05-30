@@ -19,6 +19,8 @@ export class EditarVentaComponent implements OnInit {
 
   ventaForm!:FormGroup;
   cargando:boolean = true;
+  cargandobtn:boolean = false;
+  cargandoModificar:boolean = false;
   id:any;
   public error:boolean = false;
   public venta!:ventaEditarModel;
@@ -43,36 +45,44 @@ export class EditarVentaComponent implements OnInit {
       cliente: ['', Validators.required],
       pago: ['', Validators.required],
       ingreso: ['',[ Validators.required, Validators.min(0) ]],
-      esMayorista:[false],
+      esMayorista:[false,[]],
       esDolar:[false]
     });
+    this.id = this.route.snapshot.params.id;
+    this.cargarVenta();
     this.traerProductos();
     this.traerMetodosPago();
 
-    this.id = this.route.snapshot.params.id;
+     
+   }
+
+  cargarVenta() {
     this.ventasService.traerPorId(this.id)
       .then((ventaRst:any)=>{
-        this.cargando = !this.cargando;
+        this.cargando = false;
         this.venta = ventaRst;
-        console.log(this.venta)
         this.venta.productos.forEach((prod:any)=>{
+          console.log(prod);
           this.producto = prod;
           if( this.producto?.cantidad && this.producto.precio ){
             this.producto.total = this.producto?.cantidad * this.producto?.precio;
           }
-          this.agregarProducto();
+          this.cargarProductos();
         });
+        this.cambiarProducto(this.productos[0].id);
         this.ventaForm.controls.cliente.setValue(this.venta.cliente);
         this.ventaForm.controls.pago.setValue(this.venta.metodo_pago);
         this.ventaForm.controls.ingreso.setValue(this.venta.ingreso);
         this.ventaForm.controls.esDolar.setValue(this.venta.venta_dolar);
+        this.ventaForm.controls.esMayorista.setValue(this.venta.esMayorista);
+        this.ventaForm.controls.esMayorista.disable({ onlySelf:true })
       }).catch((err)=>{
-        this.cargando = !this.cargando;
+        console.log(err);
+        this.cargando = false;
         this.error = true;
         this.sweetService.danger(err.error.msg);
       });
-     
-   }
+  }
 
   ngOnInit(): void {
     
@@ -107,9 +117,9 @@ export class EditarVentaComponent implements OnInit {
     this.asignarStock();
   }
 
-  cambiarProducto($event:any){
+  cambiarProducto(id:any){
     this.produtosStock.map((prod)=>{
-      if( prod.id == $event.target.value ){
+      if( prod.id == id ){
         this.producto = prod;
         if( this.producto.gustos.length > 0 ){
           this.productoGustos = this.producto.gustos;
@@ -120,10 +130,10 @@ export class EditarVentaComponent implements OnInit {
     });
   }
   
-  cambiarSabor($event:any){
+  cambiarSabor(id:any){
     if( this.producto ){
       this.productoGustos.map((gusto)=> {
-        if(gusto.id == $event.target.value){
+        if(gusto.id == id){
           this.producto!.gusto = gusto;
         }
       });
@@ -142,9 +152,9 @@ export class EditarVentaComponent implements OnInit {
 
   }
 
-  cambiarCantidad($event:any){
+  cambiarCantidad(cantidad:any){
     if( this.producto ){
-      this.producto.cantidad = parseInt($event.target.value.toString());
+      this.producto.cantidad = parseInt(cantidad.toString());
     }
   }
 
@@ -164,7 +174,7 @@ export class EditarVentaComponent implements OnInit {
     });
   }
 
-  agregarProducto(){
+  cargarProductos(){
     if( this.producto ){
       let agregar = true;
       this.productos.map((prod)=>{
@@ -180,11 +190,43 @@ export class EditarVentaComponent implements OnInit {
         }
       });
       if( agregar ){
-        console.log(this.producto);
         this.productos.push({...this.producto});
       }
       this.calcularTotalPorProducto();
+    }
+  }
 
+  agregarProducto(){
+    this.cargandobtn = true;
+    if( this.producto ){
+      let agregar = true;
+      this.productos.map((prod)=>{
+        if( prod.id == this.producto?.id && prod.gusto?.id == this.producto?.gusto?.id ){
+          if( this.producto.cantidad && prod.cantidad){
+            prod.cantidad +=  parseInt(this.producto!.cantidad.toString());
+            prod.precio = this.venta.esMayorista ? this.producto.mayorista : this.producto.minorista;
+            if( prod.cantidad > this.cantidadStock.length ){
+              prod.cantidad -=  parseInt(this.producto!.cantidad.toString());
+              this.sweetService.warning("Stock insuficiente");
+            }
+              agregar = false;
+          }
+        }
+      });
+      if( agregar ){
+        console.log(this.producto);
+        this.productos.push({...this.producto,precio: this.venta.esMayorista ? this.producto.mayorista : this.producto.minorista});
+      }
+      this.calcularTotalPorProducto();
+      this.ventasService.agregarProductoVenta(this.id, this.producto.id, this.producto.gusto?.id, this.producto.cantidad,this.ventaForm.controls.esMayorista.value )
+        .then((rst)=>{
+          console.log(rst);
+          this.cargandobtn = false;
+        }).catch((err)=>{
+          this.cargandobtn = false;
+          this.sweetService.danger(err.error.msg);
+          this.cargarVenta();
+        });
     }
   }
 
@@ -208,7 +250,7 @@ export class EditarVentaComponent implements OnInit {
   sumaTotal(){
     let total = 0;
     this.productos.map((prod)=>{
-      total += parseFloat( prod.total.toString() );
+      total += parseFloat( prod.precio.toString() ) * parseFloat( prod.cantidad.toString() ) ;
     });
     return total;
   }
@@ -222,20 +264,19 @@ export class EditarVentaComponent implements OnInit {
   }
 
   guardar(){
+    this.cargandoModificar = true;
     let data:any = {};
     data['cliente'] = this.ventaForm.controls.cliente.value;
     data['metodo_pago'] = this.ventaForm.controls.pago.value;
     data['ingreso'] = this.ventaForm.controls.ingreso.value;
     data['esDolar'] = this.ventaForm.controls.esDolar.value;
-    data['total'] = this.sumaTotal();
-    data['productos'] = this.productos;
 
-    this.ventasService.crearVenta(data)
+    this.ventasService.actualizarVenta(data, this.id)
       .then((r)=>{
-        this.borrarTodo();
-        this.traerProductos();
-        this.sweetService.success('Venta registrada correctamente');
+        this.sweetService.success('Venta actualizada correctamente!');
+        this.cargandoModificar = false;
       }).catch((err)=>{
+        this.cargandoModificar = false;
         console.log(err);
         this.sweetService.danger(err.error.msg);
       });

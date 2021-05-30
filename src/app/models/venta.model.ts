@@ -13,7 +13,8 @@ export interface ventaModel{
     usuario:UsuarioModel,
     productos: ProductoVentaModel[],
     estado: string,
-    createdAt:any
+    createdAt:any,
+    esEgreso:boolean
 }
 
 export interface ventaEditarModel{
@@ -27,5 +28,6 @@ export interface ventaEditarModel{
     precio: number,
     venta_dolar:number,
     ingreso: number,
+    esMayorista:boolean,
     createdAt:any
 }

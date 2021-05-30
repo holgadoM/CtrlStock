@@ -2,17 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GustosModel } from 'src/app/models/gustos.model';
 import { ProductoModel } from 'src/app/models/producto.model';
+import { UsuarioModel } from 'src/app/models/usuario.model';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { productoService } from 'src/app/services/producto.service';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { ventasService } from 'src/app/services/venta.service';
 
 @Component({
-  selector: 'app-ventas',
-  templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.css']
+  selector: 'app-costo',
+  templateUrl: './costo.component.html',
+  styleUrls: ['./costo.component.css']
 })
-export class VentasComponent implements OnInit {
+export class CostoComponent implements OnInit {
 
   ventaForm!:FormGroup;
   cargando:boolean = false;
@@ -24,22 +26,24 @@ export class VentasComponent implements OnInit {
   public productoGustos:GustosModel[] = [];
   public ListametodosPagos:string[] = [];
 
+  usuarios:string[] = [];
+
   constructor(
     private fb:FormBuilder,
     private prodcutosService:productoService,
     private ventasService: ventasService,
     private metodosConfgService: ConfiguracionService,
-    private sweetService: SweetToastService
+    private sweetService: SweetToastService,
+    private usuaruiService: UsuarioService,
 
   ) {
     this.traerProductos();
     this.traerMetodosPago();
+    this.traerUsuarios();
     this.ventaForm = this.fb.group({
-      cliente: ['', Validators.required],
+      usuario: ['', Validators.required],
       pago: ['', Validators.required],
       ingreso: ['',[ Validators.required, Validators.min(0) ]],
-      esMayorista:[false],
-      esDolar:[false]
     });
    }
 
@@ -54,6 +58,15 @@ export class VentasComponent implements OnInit {
         this.cargarProductoDefault();
       }
     });
+  }
+
+  traerUsuarios(){
+    this.usuaruiService.listarUsuarios()
+      .then(( usuarios:any )=>{
+        usuarios.forEach((usuario:UsuarioModel)=>{
+          this.usuarios.push(`${usuario.nombre} - ${usuario.usuario}`)
+        });
+      }).catch((err)=> console.log(err));
   }
 
   traerMetodosPago(){
@@ -120,15 +133,8 @@ export class VentasComponent implements OnInit {
   calcularTotalPorProducto(){
 
     this.productos.map((prod)=>{
-      prod.total = 0;
-      if(this.ventaForm.controls.esMayorista.value){
-        if( prod?.cantidad && prod.mayorista ){
-          prod.total = parseFloat( ( parseInt(prod.cantidad.toString()) * parseFloat(prod.mayorista.toString())).toString() );
-        }
-      }else{
-        if( prod?.cantidad && prod.minorista ){
-          prod.total = parseFloat( ( parseInt(prod.cantidad.toString()) * parseFloat(prod.minorista.toString())).toString() );
-        }
+      if( prod.gusto?.costo  ){
+        prod.total = prod.gusto?.costo;
       }
     });
   }
@@ -184,17 +190,14 @@ export class VentasComponent implements OnInit {
   guardar(){
 
     if(this.ventaForm.invalid) return;
-    
+
     let data:any = {};
-    data['cliente'] = this.ventaForm.controls.cliente.value;
+    data['usuario'] = this.ventaForm.controls.usuario.value;
     data['metodo_pago'] = this.ventaForm.controls.pago.value;
     data['ingreso'] = this.ventaForm.controls.ingreso.value;
-    data['esDolar'] = this.ventaForm.controls.esDolar.value;
-    data['esMayorista'] = this.ventaForm.controls.esMayorista.value;
     data['total'] = this.sumaTotal();
     data['productos'] = this.productos;
-
-    this.ventasService.crearVenta(data)
+    this.ventasService.crearVentaalCosto(data)
       .then((r)=>{
         this.borrarTodo();
         this.traerProductos();

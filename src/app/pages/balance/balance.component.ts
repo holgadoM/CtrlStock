@@ -15,6 +15,7 @@ export class BalanceComponent implements OnInit {
   public fecha:any;
   public total_gral:number = 0;
   public ganancia_gral:number = 0;
+  public egreso_gral:number = 0;
   public ingreso_gral:number = 0;
 
   constructor(
@@ -32,6 +33,7 @@ export class BalanceComponent implements OnInit {
     this.ganancia_gral = 0;
     this.total_gral = 0;
     this.ingreso_gral = 0;
+    this.egreso_gral = 0;
     this.balanceService.obtenerPorMetodoDePago($event.target.value)
       .then((r:IventasItemModel[])=>{
         r.map((venta)=>{
@@ -41,14 +43,19 @@ export class BalanceComponent implements OnInit {
         });
 
         this._arrayMetodosDePago.map((rst)=>{
-          console.log(rst);
           const auxVentas = r.filter((venta)=> venta.metodo_pago == rst);
           let total = 0;
           let ganancia_aux = 0;
           let total_ingreso = 0;
+          let total_egreso = 0;
           auxVentas.map((auxVenta)=>{
-            total += parseFloat(auxVenta.precio.toString());
-            total_ingreso += parseFloat(auxVenta.ingreso.toString());
+            if( auxVenta.esEgreso ){
+              total_egreso += parseFloat(auxVenta.precio.toString());
+              total_ingreso -= total_egreso;
+            }else{
+              total += parseFloat(auxVenta.precio.toString());
+              total_ingreso += parseFloat(auxVenta.ingreso.toString());
+            }
             auxVenta.productos.map((prod)=>{
               if(prod.gusto?.costo){
                 ganancia_aux += ( prod.gusto?.costo);
@@ -58,12 +65,14 @@ export class BalanceComponent implements OnInit {
           this.total_gral += total;
           this.ganancia_gral += (total - ganancia_aux);
           this.ingreso_gral += total_ingreso;
+          this.egreso_gral += total_egreso;
           this.ventasPorMetodosPago.push({
             metodo : rst,
             items: auxVentas,
             total: total,
             ganancia_neta: (total - ganancia_aux),
-            total_ingreso: total_ingreso
+            total_ingreso: total_ingreso,
+            total_egreso: total_egreso
           });
         });
       })

@@ -37,7 +37,7 @@
                                         type="checkbox" 
                                         name="esMayorista"
                                         formControlName="esMayorista">
-                                        <label class="form-check-label" for="flexCheckDisabled">
+                                        <label class="form-check-label" >
                                             Es mayorista?
                                         </label>
                                     </div>
@@ -53,25 +53,30 @@
                             <div class="row row-cols-auto">
                                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                     <label>Producto</label>
-                                    <select class="form-select" (change)="cambiarProducto($event)" aria-label="Default select example">
+                                    <select class="form-select" (change)="cambiarProducto($event.target.value)" aria-label="Default select example">
                                         <option *ngFor="let item of produtosStock; let i = index" [selected]="i == 0" [value]="item.id">{{ item.marca }}- {{ item.modelo }}</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                     <label>Sabor</label>
-                                    <select class="form-select" (change)="cambiarSabor($event)" aria-label="Default select example">
+                                    <select class="form-select" (change)="cambiarSabor($event.target.value)" aria-label="Default select example">
                                         <option *ngFor="let item of producto?.gustos" [value]="item.id">{{ item.sabor }}</option>
                                     </select>
                                 </div>
                                 <div class="col-6 col-sm-6 col-md-6 col-lg-2 col-xl-2">
                                     <label>Cantidad</label>
-                                    <select class="form-select" (change)="cambiarCantidad($event)" aria-label="Default select example">
+                                    <select class="form-select" (change)="cambiarCantidad($event.target.value)" aria-label="Default select example">
                                         <option *ngFor="let item of cantidadStock" [value]="item">{{ item }}</option>
                                     </select>
                                 </div>
                                 <div class="col-2 mt-auto">
                                     <label></label>
-                                    <button (click)="agregarProducto()" type="button" class="btn btn-primary btn-sm">Agregar</button>
+                                    <div *ngIf="!cargandobtn">
+                                        <button (click)="agregarProducto()" type="button" class="btn btn-primary btn-sm">Agregar</button>
+                                    </div>
+                                    <div *ngIf="cargandobtn">
+                                        <button type="button" class="btn btn-primary btn-sm" disabled> <i class="fa fa-spin fa-sync"></i> Cargando </button>
+                                    </div>
                                 </div>
                             </div>
                             <!-- <div class="col-4 col-md-2 ms-5 col-lg-1 col-xl-1 col-xxl-1 mt-1">
@@ -141,10 +146,10 @@
                             <hr>
                             <div class="row">
                                 <div class="col align-self-start">
-                                    <h3>Total: {{ sumaTotal() | currency }}</h3>
+                                    <h3>Total: ${{ sumaTotal() | currency }}</h3>
                                     <button [disabled]="ventaForm.invalid" type="submit" class="btn btn-success mr-2">
-                                        <div *ngIf="!cargando"><i class="fa fa-save"></i>Agregar</div>
-                                        <div *ngIf="cargando"><i class="fa fa-spin fa-sync"></i>Enviando...</div>
+                                        <div *ngIf="!cargandoModificar"><i class="fa fa-save"></i>Modificar</div>
+                                        <div *ngIf="cargandoModificar"><i class="fa fa-spin fa-sync"></i>Enviando...</div>
                                     </button>
                                     
                                     <!-- 
@@ -153,8 +158,6 @@
                                             Espere por favor...
                                         </button> 
                                     -->
-                                    
-                                    <button (click)="borrarTodo()" class="btn btn-outline-danger">Borrar todo</button>
                                 </div>
                             </div>
                         </form>

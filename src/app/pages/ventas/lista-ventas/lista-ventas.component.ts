@@ -5,6 +5,9 @@ import { SweetToastService } from 'src/app/services/sweetToast.service';
 import { ventasService } from 'src/app/services/venta.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Router } from '@angular/router';
+import { IventasItemModel, ventasPorMetodosPagoModel } from 'src/app/models/balance.model';
+import { BalanceService } from 'src/app/services/balance.service';
+import { IEgreso } from 'src/app/models/egreso.model';
 
 @Component({
   selector: 'app-lista-ventas',
@@ -16,17 +19,24 @@ export class ListaVentasComponent implements OnInit {
   @ViewChild('inputBuscar') cntrolBuscar!:ElementRef;
 
   public ventas!:ventaModel[];
+  public egreso!:IEgreso[];
   public ventasTabla:ventaModel[] = [];
+
+  public ventasPorMetodosPago :ventasPorMetodosPagoModel[] = [];
+  private _arrayMetodosDePago:string[] = [];
+  public fecha:any;
 
   constructor(
     private ventasService:ventasService,
     private sweetService: SweetToastService,
     private clipboard: Clipboard,
-    private router:Router
+    private router:Router,
+    private balanceService: BalanceService,
   ) { }
 
   ngOnInit(): void {
-    this.traerVentas()
+    this.traerVentas();
+    this.cargarCajas();
   }
 
   traerVentas(){
@@ -94,6 +104,44 @@ export class ListaVentasComponent implements OnInit {
     });
     let estaCopiado = this.clipboard.copy(textoProductos);
     if( estaCopiado ) this.sweetService.success("Copiado");
+  }
+
+  cargarCajas(){
+    this.balanceService.obtenerTodosMetodoDePago()
+      .then((r:IventasItemModel[])=>{
+        r.map((venta)=>{
+          if( !this._arrayMetodosDePago.includes( venta.metodo_pago ) ){
+            this._arrayMetodosDePago.push(venta.metodo_pago);
+          }
+        });
+
+        this._arrayMetodosDePago.map((rst)=>{
+          const auxVentas = r.filter((venta)=> venta.metodo_pago == rst);
+          let total = 0;
+          let ganancia_aux = 0;
+          let total_ingreso = 0;
+          let total_egreso = 0;
+          auxVentas.map((auxVenta)=>{
+            if( auxVenta.esEgreso ){
+              total_egreso += parseFloat(auxVenta.precio.toString());
+              total_ingreso -= total_egreso;
+            }else{
+              total += parseFloat(auxVenta.precio.toString());
+              total_ingreso += parseFloat(auxVenta.ingreso.toString());
+              ganancia_aux += parseFloat(auxVenta.ganancia.toString());
+            }
+          });
+          this.ventasPorMetodosPago.push({
+            metodo : rst,
+            items: auxVentas,
+            total: total,
+            ganancia_neta: ganancia_aux,
+            total_ingreso: total_ingreso,
+            total_egreso: total_egreso
+          });
+        });
+      })
+      .catch((err)=> this.sweetService.warning(err.error.msg) )
   }
 
 }

@@ -5,6 +5,7 @@ export interface ventasPorMetodosPagoModel{
     total: number;
     ganancia_neta?:number;
     total_ingreso?: number;
+    total_egreso?: number;
     items:IventasItemModel[];
 }
 
@@ -18,7 +19,9 @@ export interface IventasItemModel {
     ingreso: number;
     metodo_pago: string;
     precio: number;
+    ganancia: number;
     updatedAt: string;
     venta_dolar: any;
+    esEgreso:boolean;
     productos:ProductoModel[];
 }
