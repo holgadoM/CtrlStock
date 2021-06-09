@@ -2,8 +2,8 @@
     <ul class="nav">
       <li class="nav-item">
         <a class="nav-link" (click)="abrirTour()">
-          <i style="color: green;" class="menu-icon far fa-money-bill-alt"></i>
-          <span class="menu-title">Tour web!</span>
+          <i style="color: lightseagreen;" class="menu-icon fas fa-bus"></i>
+          <span class="menu-title">Tour por el Menu! (animado)</span>
         </a>
       </li>
       <hr>
@@ -57,8 +57,10 @@
           <span class="menu-title">Lista de egresos</span>
         </a>
       </li>
+      
       <hr>
-      <li *ngIf="esAdmin" class="nav-item" id="lista-ventas">
+      
+      <li class="nav-item" id="lista-ventas">
         <a class="nav-link" routerLink="/venta-lista">
           <i style="color: cadetblue;" class="menu-icon fas fa-clipboard-list"></i>
           <span class="menu-title">Ver ventas</span>
@@ -71,6 +73,7 @@
           <span class="menu-title">Balance</span>
         </a>
       </li>
+
       <hr *ngIf="esAdmin">
       
       <li *ngIf="esAdmin" class="nav-item" id="lista-usuarios">

@@ -17,9 +17,6 @@ export class SidebarComponent implements OnInit {
 
   public esAdmin = false;
 
-  private IntroJs = IntroJs();
-
-
   constructor(
     private router:Router,
     private store:Store<AppState>,
@@ -46,6 +43,11 @@ export class SidebarComponent implements OnInit {
       .addStep({
         element: document.querySelectorAll('#lista-productos')[0],
         intro: "Se muestra todos los productos con sis variantes, stock, precio, etc",
+        position: 'right',
+      })
+      .addStep({
+        element: document.querySelectorAll('#lista-ventas')[0],
+        intro: "Se muestran todos las ventas, con su detalle, cliente, productos, ganancia, etc",
         position: 'right',
       }).start();
 
