@@ -1,6 +1,12 @@
 <nav class="sidebar sidebar-offcanvas">
     <ul class="nav">
-  
+      <li class="nav-item">
+        <a class="nav-link" (click)="abrirTour()">
+          <i style="color: green;" class="menu-icon far fa-money-bill-alt"></i>
+          <span class="menu-title">Tour web!</span>
+        </a>
+      </li>
+      <hr>
       <!-- <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard">
           <i class="menu-icon fa fa-tachometer-alt"></i>
@@ -8,14 +14,14 @@
         </a>
       </li> -->
   
-      <li class="nav-item">
+      <li class="nav-item" id="registrar-venta" >
         <a class="nav-link" routerLink="/">
           <i style="color: green;" class="menu-icon far fa-money-bill-alt"></i>
           <span class="menu-title">Registrar venta</span>
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" id="registrar-venta-costo">
         <a class="nav-link" routerLink="/costo">
           <!-- <i class="menu-icon fa fa-cash-register"></i> -->
           <i style="color: green;" class=" menu-icon fas fa-money-bill-alt"></i>
@@ -23,7 +29,7 @@
         </a>
       </li>
       
-      <li class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="registrar-egreso">
         <a class="nav-link" routerLink="/egreso">
           <!-- <i class="menu-icon fa fa-cash-register"></i> -->
           <i style="color: crimson;" class=" menu-icon fas fa-money-bill-alt"></i>
@@ -31,49 +37,49 @@
         </a>
       </li>
       <hr>
-      <li class="nav-item">
+      <li class="nav-item" id="lista-productos">
         <a class="nav-link" routerLink="/lista">
           <i style="color: skyblue;" class="menu-icon fas fa-list"></i>
           <span class="menu-title">Lista de productos</span>
         </a>
       </li>
 
-      <li *ngIf="esAdmin" class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="agregar-producto" >
         <a class="nav-link" routerLink="/agregar">
           <i style="color: skyblue;" class="menu-icon fas fa-plus-circle"></i>
           <span class="menu-title">Agregar nuevo producto</span>
         </a>
       </li>
 
-      <li class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="lista-egresos">
         <a class="nav-link" routerLink="/egreso-lista">
           <i style="color: tomato;" class="menu-icon fas fa-outdent"></i>
           <span class="menu-title">Lista de egresos</span>
         </a>
       </li>
       <hr>
-      <li class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="lista-ventas">
         <a class="nav-link" routerLink="/venta-lista">
           <i style="color: cadetblue;" class="menu-icon fas fa-clipboard-list"></i>
           <span class="menu-title">Ver ventas</span>
         </a>
       </li>
 
-      <li *ngIf="esAdmin" class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="balance">
         <a class="nav-link" routerLink="/balance">
           <i style="color: cornflowerblue;" class="menu-icon fas fa-chart-line"></i>
           <span class="menu-title">Balance</span>
         </a>
       </li>
       <hr>
-      <li *ngIf="esAdmin" class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="lista-usuarios">
         <a class="nav-link" routerLink="/usuarios">
           <i style="color: black;" class="menu-icon fas fa-users"></i>
           <span class="menu-title">Usuarios</span>
         </a>
       </li>
       
-      <li *ngIf="esAdmin" class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item" id="configuracion">
         <a class="nav-link" routerLink="/configuracion">
           <i class="menu-icon fas fa-cogs"></i>
           <span class="menu-title">Configuración</span>

@@ -6,7 +6,7 @@ export interface State {
 }
 
 export const initialState: State = {
-    sidebarEstado: false,
+    sidebarEstado: true,
 }
 
 const _uiReducer = createReducer(initialState,
