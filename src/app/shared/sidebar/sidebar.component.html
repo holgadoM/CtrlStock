@@ -71,7 +71,8 @@
           <span class="menu-title">Balance</span>
         </a>
       </li>
-      <hr>
+      <hr *ngIf="esAdmin">
+      
       <li *ngIf="esAdmin" class="nav-item" id="lista-usuarios">
         <a class="nav-link" routerLink="/usuarios">
           <i style="color: black;" class="menu-icon fas fa-users"></i>
