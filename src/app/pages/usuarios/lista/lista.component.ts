@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { SweetToastService } from 'src/app/services/sweetToast.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import SweetAlert from "sweetalert2";
+import { usuarioReducer } from '../../auth/auth.reducer';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -15,17 +18,23 @@ export class ListaUsuariosComponent implements OnInit {
   usuarioForm!: FormGroup;
   tipoInput:string = "password";
   usuarios:UsuarioModel[] = [];
+  public miUsuario!:UsuarioModel;
 
   constructor(
     private fb:FormBuilder,
-    private usuaruiService: UsuarioService,
-    private _sweetService: SweetToastService
+    private usuarioService: UsuarioService,
+    private _sweetService: SweetToastService,
+    private store: Store<AppState>
   ) { 
     this.usuarioForm = this.fb.group({
       usuario:['',Validators.required],
       nombre:['',Validators.required],
       clave:['',Validators.required],
       esAdmin:[false]
+    });
+
+    this.store.select('usuario').subscribe(( {usuario} )=>{
+      this.miUsuario = usuario;
     });
   }
 
@@ -34,7 +43,7 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   traerTodos(){
-    this.usuaruiService.listarUsuarios()
+    this.usuarioService.listarUsuarios()
       .then(( usuarios:any )=>{
         this.usuarios = usuarios;
       }).catch((err)=> console.log(err));
@@ -51,7 +60,7 @@ export class ListaUsuariosComponent implements OnInit {
         user.esAdmin = usuario.esAdmin;
       }
     });
-    this.usuaruiService.cambiarAdmin(usuario)
+    this.usuarioService.cambiarAdmin(usuario)
       .then((r)=>{
       })
       .catch((err)=>{
@@ -74,7 +83,7 @@ export class ListaUsuariosComponent implements OnInit {
     data['nombre'] = this.usuarioForm.controls.nombre.value;
     data['clave'] = this.usuarioForm.controls.clave.value;
     data['esAdmin'] = this.usuarioForm.controls.esAdmin.value;
-    this.usuaruiService.registrarUsuario(data)
+    this.usuarioService.registrarUsuario(data)
       .then((user)=>{
         this._sweetService.success(`Usuario ${data['usuario']} creado!`);
         this.usuarioForm.reset();
@@ -98,7 +107,7 @@ export class ListaUsuariosComponent implements OnInit {
       
     }).then((resultado)=>{
       if( resultado.isConfirmed ){
-        this.usuaruiService.eliminarUsuario(item.id)
+        this.usuarioService.eliminarUsuario(item.id)
         .then((rst)=>{
           this._sweetService.success("Usuario eliminado correctamente");
           this.traerTodos();

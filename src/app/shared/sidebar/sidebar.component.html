@@ -23,7 +23,7 @@
         </a>
       </li>
       
-      <li class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item">
         <a class="nav-link" routerLink="/egreso">
           <!-- <i class="menu-icon fa fa-cash-register"></i> -->
           <i style="color: crimson;" class=" menu-icon fas fa-money-bill-alt"></i>
@@ -45,7 +45,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li *ngIf="esAdmin" class="nav-item">
         <a class="nav-link" routerLink="/egreso-lista">
           <i style="color: tomato;" class="menu-icon fas fa-outdent"></i>
           <span class="menu-title">Lista de egresos</span>
@@ -65,7 +65,7 @@
           <span class="menu-title">Balance</span>
         </a>
       </li>
-      <hr>
+      <hr *ngIf="esAdmin">
       <li *ngIf="esAdmin" class="nav-item">
         <a class="nav-link" routerLink="/usuarios">
           <i style="color: black;" class="menu-icon fas fa-users"></i>

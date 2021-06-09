@@ -81,7 +81,7 @@
                                 <th scope="row">{{item.id}}</th>
                                 <td>{{ item.nombre }}</td>
                                 <td> {{item.usuario}} </td>
-                                <td> <input type="checkbox" (change)="cambiarAdmin(item)" [checked]="item.esAdmin"> </td>
+                                <td> <input type="checkbox" [disabled]=" item.id == miUsuario.id" (change)="cambiarAdmin(item)" [checked]="item.esAdmin"> </td>
                                 <td> <span style="color: red;" ><i (click)="borrar(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
                             </tr>
                             </tbody>
