@@ -41,6 +41,9 @@ export class productoService{
     actualizarCosto(id:number, costo:number){
         return this._http.put(`${url}/producto/modificar/gusto/costo`,{ id, costo }).toPromise();
     }
+    actualizarSabor(id:number, sabor:string){
+        return this._http.put(`${url}/producto/modificar/gusto/nombre`,{ id, sabor }).toPromise();
+    }
 
     modificarProducto(producto:ProductoModel){
         return this._http.put(`${url}/producto/modificar`,{ ...producto }).toPromise();

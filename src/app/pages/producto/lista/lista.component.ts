@@ -59,6 +59,7 @@ export class ListaComponent implements OnInit {
       return new FormGroup({
         stock: new FormControl(producto.gusto?.stock),
         costo: new FormControl(producto.gusto?.costo),
+        sabor: new FormControl(producto.gusto?.sabor),
         minorista: new FormControl(producto.minorista),
         mayorista: new FormControl(producto.mayorista),
       });
@@ -118,6 +119,20 @@ export class ListaComponent implements OnInit {
               .then((rst)=>{
                     if(e.gusto){
                       e.gusto.costo = parseFloat(control.value);
+                    }
+                    return;
+                  })
+                  .catch((err)=>{
+                    this.sweetService.danger(err.error.msg);
+                    this.traerTodos();
+                  });
+                return e;
+            }
+            else if(field == 'sabor'){
+              this.productosService.actualizarSabor(e.gusto?.id!, control.value)
+              .then((rst)=>{
+                    if(e.gusto){
+                      e.gusto.sabor = control.value;
                     }
                     return;
                   })

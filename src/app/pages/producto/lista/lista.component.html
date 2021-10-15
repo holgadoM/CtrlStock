@@ -30,7 +30,16 @@
                                     <th scope="row">{{i+1}}</th>
                                     <td>{{ item.marca }}</td>
                                     <td> {{item.modelo}} </td>
-                                    <td> {{item.gusto?.sabor}} </td>
+                                    <!-- si es admin puedo editar la columna-->
+                                    <td *ngIf="esAdmin">
+                                        <editable (update)="updateField(i, 'sabor')">
+                                            <ng-template viewMode>{{item.gusto?.sabor}}</ng-template>
+                                            <ng-template editMode>
+                                                <input [formControl]="getControl(i, 'sabor')" focusable editableOnEnter>
+                                            </ng-template>
+                                        </editable>
+                                    </td>
+                                    <td *ngIf="!esAdmin"> {{item.gusto?.sabor}} </td>
                                     <!-- si es admin puedo editar la columna-->
                                     <td *ngIf="esAdmin">
                                         <editable (update)="updateField(i, 'stock')">
