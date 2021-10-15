@@ -2,7 +2,7 @@
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-auto">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Lista de productos</h4>
+                <h4 class="card-title">Lista de productos y sabores</h4>
                 <div >
                     <input class="form-control" #inputBuscar (keyup)="buscar()" placeholder="Buscar..." type="text">
                 </div>
@@ -77,6 +77,60 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-10">
+                        <h4 class="card-title">Lista de productos</h4>
+                    </div>
+                    <div class="col-1">
+
+                        <button type="button" class="btn btn-outline-primary mt-2" (click)="isCollapsed = !isCollapsed"
+                        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                        <div *ngIf='!isCollapsed'>Ocultar</div>
+                        <div *ngIf='isCollapsed'>Mostrar</div>
+                    </button>
+                </div>
+                </div>
+                <div class="container mt-3">
+                    <div class="container">
+                        <div class="row">
+                            <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Marca</th>
+                                            <th scope="col">Modelo</th>
+                                            <th scope="col">Precio mayorista</th>
+                                            <th scope="col">Precio monorista</th>
+                                            <th scope="col">Borrar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  *ngFor="let item of listaProductos;let i = index">
+                                            <th scope="row">{{i+1}}</th>
+                                            <td>{{ item.marca }}</td>
+                                            <td> {{item.modelo}} </td>
+                                            <td> {{item.mayorista}} </td>
+                                            <td> {{item.minorista}} </td>
+                                            <td> <span style="color: red;" ><i (click)="borrarProducto(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>   
+                            </div>
                         </div>
                     </div>
                 </div>

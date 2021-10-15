@@ -12,10 +12,14 @@ import SweetAlert from "sweetalert2";
 })
 export class ListaComponent implements OnInit {
 
+  isCollapsed:boolean = false;
+
   @ViewChild('inputBuscar') cntrolBuscar!:ElementRef;
 
   public productos!:ProductoModel[];
   public productosTabla:ProductoModel[] = [];
+  
+  public listaProductos!:ProductoModel[];
 
   controls!: FormArray;
 
@@ -31,6 +35,7 @@ export class ListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.traerTodos();
+    this.traerSoloProductos();
   }
 
   traerTodos(){
@@ -39,6 +44,13 @@ export class ListaComponent implements OnInit {
         this.productos = [];
         this.productos = productos;
         this.armarArrayProductos();
+      }).catch((err)=> this.sweetService.danger(err.error.msg) );
+  }
+
+  traerSoloProductos(){
+    this.productosService.traerTodos()
+      .then((productos:any)=>{
+        this.listaProductos = productos;
       }).catch((err)=> this.sweetService.danger(err.error.msg) );
   }
 
@@ -153,6 +165,31 @@ export class ListaComponent implements OnInit {
           .then((rst)=>{
               this.sweetService.success("Gusto eliminado!");
               this.traerTodos();
+          })
+          .catch((err)=> this.sweetService.danger(err.error.msg) )
+      }
+    });
+  }
+
+  borrarProducto(producto:ProductoModel){
+    SweetAlert.fire({
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6',
+      position: 'center',
+      reverseButtons: true,
+      text: `Quiere eliminar: ${producto.marca} ${producto.modelo}} ?`,
+      
+    }).then((resultado)=>{
+      if( resultado.isConfirmed ){
+         this.productosService.eliminarProducto(producto.id)
+          .then((rst)=>{
+              this.sweetService.success("Producto eliminado!");
+              this.traerTodos();
+              this.traerSoloProductos();
           })
           .catch((err)=> this.sweetService.danger(err.error.msg) )
       }

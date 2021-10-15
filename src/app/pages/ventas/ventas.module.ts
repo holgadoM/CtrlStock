@@ -27,6 +27,7 @@ import { ViewModeDirective } from 'src/app/directive/editable/view-mode.directiv
 import { CostoComponent } from './costo/costo.component';
 import { RegistrarEgresoComponent } from './registrar-egreso/registrar-egreso.component';
 import { ListarEgresosComponent } from './listar-egresos/listar-egresos.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ListarEgresosComponent } from './listar-egresos/listar-egresos.componen
     ReactiveFormsModule,
     Ng2SmartTableModule,
     ClipboardModule,
+    NgbModule
   ],
   exports:[
     DashboardComponent,

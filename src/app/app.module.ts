@@ -33,6 +33,7 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    
     StoreModule.forRoot(appReducers,{}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     JwtModule.forRoot({
@@ -50,7 +51,7 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
   exports:[
-    BrowserModule
+    BrowserModule,
   ]
 })
 export class AppModule { }

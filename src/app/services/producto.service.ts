@@ -15,6 +15,10 @@ export class productoService{
         return this._http.get(`${url}/producto/`).toPromise();
     }
 
+    traerSoloProductos(){
+        return this._http.get(`${url}/producto/solo`).toPromise();
+    }
+
     crearProducto(data:any){
         return this._http.post(`${url}/producto/agregar`,{...data}).toPromise();
     }
@@ -25,6 +29,10 @@ export class productoService{
 
     eliminarGusto(id:number){
         return this._http.delete(`${url}/producto/${id}`).toPromise();
+    }
+
+    eliminarProducto(id:number){
+        return this._http.delete(`${url}/producto/eliminar/${id}`).toPromise();
     }
 
     actualizarStock(id:number, stock:number){
