@@ -39,12 +39,16 @@ export class ventasService{
     cambiarEstado(estado:string, id:number){
         return this._http.put(`${url}/ventas/cambiarEstado/${id}`, {estado}).toPromise();
     }
+    agregarProductoVenta(idVenta:any, idProducto:any, idGusto:any,cantidad:number, esMayorista:boolean ){
+        return this._http.put(`${url}/ventas/agregarProducto/${idVenta}/${idProducto}/${idGusto}`, {cantidad, esMayorista}).toPromise();
+    }
     
     eliminarProductoVenta(idVenta:any, idProducto:any, idGusto:any){
         return this._http.delete(`${url}/ventas/eliminarProducto/${idVenta}/${idProducto}/${idGusto}`,).toPromise();
     }
 
-    agregarProductoVenta(idVenta:any, idProducto:any, idGusto:any,cantidad:number, esMayorista:boolean ){
-        return this._http.put(`${url}/ventas/agregarProducto/${idVenta}/${idProducto}/${idGusto}`, {cantidad, esMayorista}).toPromise();
+    eliminarVenta(idVenta:any){
+        return this._http.delete(`${url}/ventas/eliminar/${idVenta}`,).toPromise();
     }
+
 }

@@ -38,6 +38,9 @@ export class productoService{
     actualizarStock(id:number, stock:number){
         return this._http.put(`${url}/producto/agregar/stock`,{ id, stock }).toPromise();
     }
+    actualizarCosto(id:number, costo:number){
+        return this._http.put(`${url}/producto/modificar/gusto/costo`,{ id, costo }).toPromise();
+    }
 
     modificarProducto(producto:ProductoModel){
         return this._http.put(`${url}/producto/modificar`,{ ...producto }).toPromise();

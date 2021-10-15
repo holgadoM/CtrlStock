@@ -58,8 +58,9 @@ export class ListaComponent implements OnInit {
     const toGroups = this.productosTabla.map(producto => {
       return new FormGroup({
         stock: new FormControl(producto.gusto?.stock),
+        costo: new FormControl(producto.gusto?.costo),
         minorista: new FormControl(producto.minorista),
-        mayorista: new FormControl(producto.mayorista)
+        mayorista: new FormControl(producto.mayorista),
       });
     });
     this.controls = new FormArray(toGroups);
@@ -96,11 +97,11 @@ export class ListaComponent implements OnInit {
     const control = this.getControl(index, field);
 
     if (control.valid) {
-      this.productos = this.productos.map((e, i) => {
-        if (index === i) {
+      this.productos = this.productos.map( (e, i) => {
 
+        if (index === i) {
             if( field == 'stock' ){
-              this.productosService.actualizarStock(e.id, control.value)
+              this.productosService.actualizarStock(e.gusto?.id!, control.value)
               .then((rst)=>{
                     if(e.gusto){
                       e.gusto.stock = parseFloat(control.value);
@@ -112,7 +113,21 @@ export class ListaComponent implements OnInit {
                     this.traerTodos();
                   });
                 return e;
-            }else{
+            } else if(field == 'costo'){
+              this.productosService.actualizarCosto(e.gusto?.id!, control.value)
+              .then((rst)=>{
+                    if(e.gusto){
+                      e.gusto.costo = parseFloat(control.value);
+                    }
+                    return;
+                  })
+                  .catch((err)=>{
+                    this.sweetService.danger(err.error.msg);
+                    this.traerTodos();
+                  });
+                return e;
+            }
+            else{
               let aux = {
                 ...e,
                 [field] : control.value,
@@ -124,7 +139,11 @@ export class ListaComponent implements OnInit {
               }
 
               let auxRst = this.productosService.modificarProducto(aux)
-                .then((rst) => rst)
+                .then((rst) =>{
+                  this.traerTodos();
+                  this.traerSoloProductos();
+                  return rst;
+                })
                 .catch((err)=>{
                   this.sweetService.danger(err.error.msg);
                   this.traerTodos();

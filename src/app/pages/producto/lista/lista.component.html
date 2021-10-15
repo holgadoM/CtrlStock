@@ -44,7 +44,17 @@
                                     <td *ngIf="!esAdmin">
                                         {{item.gusto?.stock}}
                                     </td>
-                                    <td> {{ item.gusto?.costo }} </td>
+                                    <!-- si es admin puedo editar la columna-->
+                                    <td *ngIf="esAdmin"> 
+                                        <editable (update)="updateField(i, 'costo')">
+                                            <ng-template viewMode>{{item.gusto?.costo}}</ng-template>
+                                            <ng-template editMode>
+                                                <input [formControl]="getControl(i, 'costo')" focusable editableOnEnter>
+                                            </ng-template>
+                                        </editable>
+                                    </td>
+                                    <!-- si NO es admin, solo veo los datos  -->
+                                    <td *ngIf="!esAdmin"> {{ item.gusto?.costo }} </td>
                                     <!-- si es admin puedo editar la columna-->
                                     <td *ngIf="esAdmin"> 
                                         <editable (update)="updateField(i, 'mayorista')">

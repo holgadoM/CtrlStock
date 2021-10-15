@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { IventasItemModel, ventasPorMetodosPagoModel } from 'src/app/models/balance.model';
 import { BalanceService } from 'src/app/services/balance.service';
 import { IEgreso } from 'src/app/models/egreso.model';
+import SweetAlert from "sweetalert2";
 
 @Component({
   selector: 'app-lista-ventas',
@@ -142,6 +143,31 @@ export class ListaVentasComponent implements OnInit {
         });
       })
       .catch((err)=> this.sweetService.warning(err.error.msg) )
+  }
+
+  eliminarVenta(venta:ventaModel){
+    SweetAlert.fire({
+      cancelButtonText: "Cancelar",
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6',
+      position: 'center',
+      reverseButtons: true,
+      text: `Quiere eliminar: ID: #${venta.id} - Cliente: ${venta.cliente} - Valor: $${venta.precio}?`,
+      
+    }).then((resultado)=>{
+      if( resultado.isConfirmed ){
+         this.ventasService.eliminarVenta(venta.id)
+          .then((rst)=>{
+              this.sweetService.success("Venta eliminada!");
+              this.traerVentas();
+              this.cargarCajas();
+          })
+          .catch((err)=> this.sweetService.danger(err.error.msg) )
+      }
+    });
   }
 
 }

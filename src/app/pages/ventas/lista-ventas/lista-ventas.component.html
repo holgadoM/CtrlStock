@@ -1,6 +1,6 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-auto">
             <div class="card">
                 <div class="row">
                     <div class="row mb-3">
@@ -37,7 +37,7 @@
 
 <div class="container">
 <div class="row">
-    <div class="col-10 col-sm-10 col-md-9 col-lg-9 col-xl-11">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-auto">
         <div class="pb-1 mt-3 text-end">
             <button class="btn btn-outline-primary" (click)="traerVentas()" > <i class="fas fa-sync-alt"></i> Actualizar</button>
         </div>
@@ -73,6 +73,7 @@
                                         <th scope="col">Productos</th>
                                         <th scope="col">Copiar</th>
                                         <th scope="col">Editar</th>
+                                        <th scope="col">Borrar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -131,6 +132,7 @@
                                             <i *ngIf="!item.esEgreso" (click)="editar(item.id)" class="fas fa-edit fa-2x"></i> 
                                             <div *ngIf="item.esEgreso"></div>
                                         </td>
+                                        <td> <span style="color: red;" ><i (click)="eliminarVenta(item)" class="text-rpimary far fa-trash-alt fa-2x"></i></span> </td>
                                     </tr>
                                 </tbody>
                             </table>
