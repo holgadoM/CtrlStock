@@ -60,7 +60,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <label>Sabor</label>
                             <select class="form-select" (change)="cambiarSabor($event)" aria-label="Default select example">
-                                <option *ngFor="let item of producto?.gustos" [value]="item.id">{{ item.sabor }}</option>
+                                <option *ngFor="let item of producto?.gustos" [value]="item.id">{{ item.sabor }}(${{item.precio}})</option>
                             </select>
                         </div>
                         <div class="col-6 col-sm-6 col-md-6 col-lg-2 col-xl-2">

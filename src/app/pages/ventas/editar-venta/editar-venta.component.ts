@@ -22,6 +22,7 @@ export class EditarVentaComponent implements OnInit {
   cargandobtn:boolean = false;
   cargandoModificar:boolean = false;
   id:any;
+  metodo_pago:string = '';
   public error:boolean = false;
   public venta!:ventaEditarModel;
 
@@ -41,17 +42,17 @@ export class EditarVentaComponent implements OnInit {
     private route:ActivatedRoute
 
   ) {
-    this.ventaForm = this.fb.group({
-      cliente: ['', Validators.required],
-      pago: ['', Validators.required],
-      ingreso: ['',[ Validators.required, Validators.min(0) ]],
-      esMayorista:[false,[]],
-      esDolar:[false]
-    });
     this.id = this.route.snapshot.params.id;
     this.cargarVenta();
     this.traerProductos();
     this.traerMetodosPago();
+    this.ventaForm = this.fb.group({
+      cliente: ['', Validators.required],
+      pago: [this.metodo_pago, Validators.required],
+      ingreso: ['',[ Validators.required, Validators.min(0) ]],
+      esMayorista:[false,[]],
+      esDolar:[false]
+    });
 
      
    }
@@ -61,8 +62,8 @@ export class EditarVentaComponent implements OnInit {
       .then((ventaRst:any)=>{
         this.cargando = false;
         this.venta = ventaRst;
+        this.ventaForm.controls.pago.setValue(this.venta.metodo_pago);
         this.venta.productos.forEach((prod:any)=>{
-          console.log(prod);
           this.producto = prod;
           if( this.producto?.cantidad && this.producto.precio ){
             this.producto.total = this.producto?.cantidad * this.producto?.precio;

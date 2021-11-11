@@ -117,7 +117,13 @@
                                                 <div class="dropdown-menu">
                                                 <a class="dropdown-item" *ngFor="let producto of item.productos;let i = index;">
                                                     #{{i+1}} {{ producto.producto.marca }} - {{ producto.producto.modelo }} -
-                                                    {{ producto.gusto.sabor }} - {{ producto.cantidad }}
+                                                    <div *ngIf='producto.gusto != null'>
+                                                        {{ producto.gusto.sabor }}
+                                                    </div>
+                                                    <div *ngIf='producto.gusto == null'>
+                                                        Gusto no disponible
+                                                    </div>
+                                                    - {{ producto.cantidad }}
                                                 </a>
                                         
                                                 </div>

@@ -108,6 +108,7 @@ export class ListaVentasComponent implements OnInit {
   }
 
   cargarCajas(){
+    this.ventasPorMetodosPago = [];
     this.balanceService.obtenerTodosMetodoDePago()
       .then((r:IventasItemModel[])=>{
         r.map((venta)=>{
